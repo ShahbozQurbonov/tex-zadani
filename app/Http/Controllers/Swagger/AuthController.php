@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Validator;
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"name", "avatar", "password"},
+ *             required={"name", "password"},
  *             @OA\Property(property="name", type="string", example="John Doe"),
+ *             @OA\Property(property="password", type="string", example="password123"),
  *             @OA\Property(property="avatar", type="string", example="http://example.com/shahboz.jpg"),
- *             @OA\Property(property="password", type="string", example="password123")
  *         )
  *     ),
  *     @OA\Response(

@@ -20,7 +20,6 @@
                             "schema": {
                                 "required": [
                                     "name",
-                                    "avatar",
                                     "password"
                                 ],
                                 "properties": {
@@ -28,13 +27,13 @@
                                         "type": "string",
                                         "example": "John Doe"
                                     },
-                                    "avatar": {
-                                        "type": "string",
-                                        "example": "http://example.com/shahboz.jpg"
-                                    },
                                     "password": {
                                         "type": "string",
                                         "example": "password123"
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "example": "http://example.com/shahboz.jpg"
                                     }
                                 },
                                 "type": "object"
