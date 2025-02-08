@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: L5 Swagger API
+  description: API Documentation
+  version: 1.0.0
+
+paths:
+  /register:
+    post:
+      summary: "Foydalanuvchini ro'yxatdan o'tkazish"
+      description: "Yangi foydalanuvchini ro'yxatdan o'tkazish"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "John Doe"
+                password:
+                  type: string
+                  example: "password123"
+                avatar:
+                  type: string
+                  nullable: true
+                  example: "http://example.com/avatar.jpg"
+      responses:
+        '201':
+          description: Foydalanuvchi muvaffaqiyatli ro'yxatdan o'tkazildi
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  token:
+                    type: string
+                    example: "abc123xyz"
+
+{
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "login": {
+            "type": "string",
+            "example": "johndoe"
+          },
+          "avatar": {
+            "type": "string",
+            "nullable": true,
+            "example": "http://example.com/avatar.jpg"
+          }
+        }
+      }
+    }
+  }
+}
