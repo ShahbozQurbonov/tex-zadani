@@ -27,4 +27,5 @@ class ChatController extends Controller
         $chat = Chat::findOrFail($id);
         return response()->json($chat->messages);
     }
+
 }
