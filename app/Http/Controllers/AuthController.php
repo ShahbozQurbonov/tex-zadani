@@ -67,7 +67,7 @@ class AuthController extends Controller
         return response()->json($user);
     }
 
-    public function getUserName(Request $request,$name)
+    public function getUserName($name)
     {
         $username=User::where('name',$name)->get();
         return response()->json($username);
