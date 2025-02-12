@@ -20,12 +20,22 @@
                             "schema": {
                                 "required": [
                                     "name",
+                                    "surname",
+                                    "patronymic",
                                     "password"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Shahboz"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "example": "Qurbonov"
+                                    },
+                                    "patronymic": {
+                                        "type": "string",
+                                        "example": "G`aybulloevich"
                                     },
                                     "password": {
                                         "type": "string",
@@ -108,7 +118,7 @@
         "/api/user": {
             "get": {
                 "tags": [
-                    "Profile"
+                    "Users"
                 ],
                 "summary": "Получение информации о пользователе",
                 "operationId": "3e20ff565e17a76fa1384c8a31dee558",
@@ -125,7 +135,15 @@
                                         },
                                         "name": {
                                             "type": "string",
-                                            "example": "John Doe"
+                                            "example": "Shahboz"
+                                        },
+                                        "surname": {
+                                            "type": "string",
+                                            "example": "Qurbonov"
+                                        },
+                                        "patronymic": {
+                                            "type": "string",
+                                            "example": "G`aybulloevich"
                                         },
                                         "login": {
                                             "type": "string",
@@ -153,7 +171,7 @@
             },
             "put": {
                 "tags": [
-                    "Profile"
+                    "Users"
                 ],
                 "summary": "Обновление профиля пользователя",
                 "operationId": "33262d5a04c347508a6ca97b80e99451",
@@ -169,7 +187,15 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "John Doe"
+                                        "example": "Shahboz"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "example": "Qurbonov"
+                                    },
+                                    "patronymic": {
+                                        "type": "string",
+                                        "example": "G`aybulloevich"
                                     },
                                     "avatar": {
                                         "type": "string",
@@ -194,7 +220,15 @@
                                         },
                                         "name": {
                                             "type": "string",
-                                            "example": "John Doe"
+                                            "example": "Shahboz"
+                                        },
+                                        "surname": {
+                                            "type": "string",
+                                            "example": "Qurbonov"
+                                        },
+                                        "patronymic": {
+                                            "type": "string",
+                                            "example": "G`aybulloevich"
                                         },
                                         "login": {
                                             "type": "string",
@@ -215,6 +249,87 @@
                     },
                     "401": {
                         "description": "Не авторизован"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/{name}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Поиск пользователей по имени",
+                "description": "Возвращает пользователей с указанным именем",
+                "operationId": "getUserName",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Имя пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Али"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователи найдены",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Shahboz"
+                                            },
+                                            "surname": {
+                                                "type": "string",
+                                                "example": "Qurbonov"
+                                            },
+                                            "patronymic": {
+                                                "type": "string",
+                                                "example": "G`aybulloevich"
+                                            },
+                                            "avatar": {
+                                                "type": "string",
+                                                "format": "url",
+                                                "example": "http://example.com/avatar.jpg"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Пользователи не найдены",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -426,8 +541,8 @@
             "description": "Authentication"
         },
         {
-            "name": "Profile",
-            "description": "Profile"
+            "name": "Users",
+            "description": "Users"
         },
         {
             "name": "Chats",

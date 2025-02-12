@@ -13,6 +13,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'surname'=>'required|string|max:255',
+            'patronymic'=>'required|string|max:255',
             'password' => 'required|string|min:8',
             'avatar' => 'nullable|string|url'
         ]);
@@ -23,6 +25,8 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'surname'=>$request->surname,
+            'patronymic'=>$request->patronymic,
             'password' => Hash::make($request->password),
             'avatar' => $request->avatar
         ]);
@@ -54,16 +58,27 @@ class AuthController extends Controller
         return response()->json(['user' => $user, 'token' => $token]);
     }
 
-
     public function getUser(Request $request)
     {
-        return response()->json($request->user());
+        $user=User::all();
+        if($user->isEmpty()){
+            return response()->json(['message'=>'No users found'],404);
+        }
+        return response()->json($user);
+    }
+
+    public function getUserName(Request $request,$name)
+    {
+        $username=User::where('name',$name)->get();
+        return response()->json($username);
     }
 
     public function updateUser(Request $request)
     {
         $user = $request->user();
         $user->name = $request->input('name', $user->name);
+        $user->surname = $request->input('surname', $user->surname);
+        $user->patronymic = $request->input('patronymic', $user->patronymic);
         $user->avatar = $request->input('avatar', $user->avatar);
         $user->save();
 

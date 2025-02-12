@@ -17,8 +17,10 @@ use Illuminate\Support\Facades\Validator;
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"name", "password"},
- *             @OA\Property(property="name", type="string", example="John Doe"),
+ *             required={"name","surname","patronymic","password"},
+ *             @OA\Property(property="name", type="string", example="Shahboz"),
+ *             @OA\Property(property="surname", type="string", example="Qurbonov"),
+ *             @OA\Property(property="patronymic", type="string", example="G`aybulloevich"),
  *             @OA\Property(property="password", type="string", example="password123"),
  *             @OA\Property(property="avatar", type="string", example="http://example.com/shahboz.jpg"),
  *         )
@@ -61,14 +63,16 @@ use Illuminate\Support\Facades\Validator;
  * @OA\GET(
  *     path="/api/user",
  *     summary="Получение информации о пользователе",
- *     tags={"Profile"},
+ *     tags={"Users"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Response(
  *         response=200,
  *         description="Информация о пользователе",
  *         @OA\JsonContent(
  *             @OA\Property(property="id", type="integer", example=1),
- *             @OA\Property(property="name", type="string", example="John Doe"),
+ *             @OA\Property(property="name", type="string", example="Shahboz"),
+ *             @OA\Property(property="surname", type="string", example="Qurbonov"),
+ *             @OA\Property(property="patronymic", type="string", example="G`aybulloevich"),
  *             @OA\Property(property="login", type="string", example="000001"),
  *             @OA\Property(property="avatar", type="string", example="http://example.com/avatar.jpg")
  *         )
@@ -79,17 +83,60 @@ use Illuminate\Support\Facades\Validator;
  *     )
  * ),
  * 
+ *
+ * @OA\Get(
+ *     path="/api/user/{name}",
+ *     summary="Поиск пользователей по имени",
+ *     description="Возвращает пользователей с указанным именем",
+ *     operationId="getUserName",
+ *     tags={"Users"},
+ * security={{"bearerAuth":{}}},
+ *     @OA\Parameter(
+ *         name="name",
+ *         in="path",
+ *         required=true,
+ *         description="Имя пользователя",
+ *         @OA\Schema(type="string", example="Али")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Пользователи найдены",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(
+ *                 type="object",
+ *                 @OA\Property(property="id", type="integer", example=1),
+ *                  @OA\Property(property="name", type="string", example="Shahboz"),
+ *                  @OA\Property(property="surname", type="string", example="Qurbonov"),
+ *                  @OA\Property(property="patronymic", type="string", example="G`aybulloevich"),
+ *                  @OA\Property(property="avatar", type="string", format="url", example="http://example.com/avatar.jpg")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Пользователи не найдены",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="Users not found")
+ *         )
+ *     )
+ * )
+ * 
+ * 
  * @OA\PUT(
  *     path="/api/user",
  *     summary="Обновление профиля пользователя",
- *     tags={"Profile"},
+ *     tags={"Users"},
  *     security={{"bearerAuth":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
  *             required={"name", "avatar"},
- *             @OA\Property(property="name", type="string", example="John Doe"),
- *             @OA\Property(property="avatar", type="string", example="http://example.com/avatar.jpg")
+ *              @OA\Property(property="name", type="string", example="Shahboz"),
+ *              @OA\Property(property="surname", type="string", example="Qurbonov"),
+ *              @OA\Property(property="patronymic", type="string", example="G`aybulloevich"),
+ *              @OA\Property(property="avatar", type="string", example="http://example.com/avatar.jpg")
  *         )
  *     ),
  *     @OA\Response(
@@ -97,7 +144,9 @@ use Illuminate\Support\Facades\Validator;
  *         description="Профиль успешно обновлен",
  *         @OA\JsonContent(
  *             @OA\Property(property="id", type="integer", example=1),
- *             @OA\Property(property="name", type="string", example="John Doe"),
+ *              @OA\Property(property="name", type="string", example="Shahboz"),
+ *             @OA\Property(property="surname", type="string", example="Qurbonov"),
+ *             @OA\Property(property="patronymic", type="string", example="G`aybulloevich"),
  *             @OA\Property(property="login", type="string", example="000001"),
  *             @OA\Property(property="avatar", type="string", example="http://example.com/avatar.jpg")
  *         )
