@@ -22,7 +22,6 @@ use Illuminate\Http\Request;
  *          bearerFormat="JWT",
  *      )
  * )
- * 
  */
 
 

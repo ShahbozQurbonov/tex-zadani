@@ -13,6 +13,7 @@ class MessageController extends Controller
         $chat = Chat::findOrFail($chatId);
         return response()->json($chat->messages);
     }
+
     public function store(Request $request, $chatId)
     {
         $chat = Chat::findOrFail($chatId);

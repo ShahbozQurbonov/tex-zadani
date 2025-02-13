@@ -258,29 +258,29 @@
                 ]
             }
         },
-        "/api/user/{name}": {
+        "/api/user/{search}": {
             "get": {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Поиск пользователей по имени",
-                "description": "Возвращает пользователей с указанным именем",
+                "summary": "Поиск пользователей",
+                "description": "Поиск пользователей по ID, имени, фамилии, отчеству, логину или дате создания",
                 "operationId": "getUserName",
                 "parameters": [
                     {
-                        "name": "name",
+                        "name": "search",
                         "in": "path",
-                        "description": "Имя пользователя",
+                        "description": "Введите ID, имя, фамилию, отчество, логин или дату создания пользователя",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "Али"
+                            "example": "2025-02-12"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Пользователи найдены",
+                        "description": "Найденные пользователи",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -293,20 +293,29 @@
                                             },
                                             "name": {
                                                 "type": "string",
-                                                "example": "Shahboz"
+                                                "example": "Шахбоз"
                                             },
                                             "surname": {
                                                 "type": "string",
-                                                "example": "Qurbonov"
+                                                "example": "Курбанов"
                                             },
                                             "patronymic": {
                                                 "type": "string",
-                                                "example": "G`aybulloevich"
+                                                "example": "Гайбуллоевич"
+                                            },
+                                            "login": {
+                                                "type": "string",
+                                                "example": "shahboz123"
                                             },
                                             "avatar": {
                                                 "type": "string",
                                                 "format": "url",
                                                 "example": "http://example.com/avatar.jpg"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-02-12 10:23:53"
                                             }
                                         },
                                         "type": "object"
@@ -316,14 +325,30 @@
                         }
                     },
                     "404": {
-                        "description": "Пользователи не найдены",
+                        "description": "Пользователь не найден",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "Users not found"
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Требуется авторизация",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
                                         }
                                     },
                                     "type": "object"
@@ -405,12 +430,78 @@
                 ]
             }
         },
-        "/api/chats/{id}/messages": {
+        "/api/chats/{id}": {
             "get": {
                 "tags": [
                     "Chats"
                 ],
-                "summary": "Получение сообщений чата",
+                "summary": "Получение данных о чате",
+                "operationId": "cef4a1bfa10132b70f43ac02c00e1b8d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Сообщения чата",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "message": {
+                                                "type": "string",
+                                                "example": "Привет!"
+                                            },
+                                            "file_url": {
+                                                "type": "string",
+                                                "example": "http://example.com/file.jpg"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2025-02-06T12:00:00Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Чат не найден"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/chats/{id}/messages": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Получение информации о чата",
                 "operationId": "958844b3d2965adb7740551c89ddcf23",
                 "parameters": [
                     {

@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    public function index(Request $request)
-    {
-        return response()->json($request->user()->chats);
-    }
-
     public function create(Request $request)
     {
         $chat = Chat::create([
@@ -25,7 +21,6 @@ class ChatController extends Controller
     public function show($id)
     {
         $chat = Chat::findOrFail($id);
-        return response()->json($chat->messages);
+        return response()->json($chat);
     }
-
 }

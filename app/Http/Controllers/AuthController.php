@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations\Post;
 
 class AuthController extends Controller
 {
@@ -13,8 +14,8 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'surname'=>'required|string|max:255',
-            'patronymic'=>'required|string|max:255',
+            'surname' => 'required|string|max:255',
+            'patronymic' => 'required|string|max:255',
             'password' => 'required|string|min:8',
             'avatar' => 'nullable|string|url'
         ]);
@@ -25,8 +26,8 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'surname'=>$request->surname,
-            'patronymic'=>$request->patronymic,
+            'surname' => $request->surname,
+            'patronymic' => $request->patronymic,
             'password' => Hash::make($request->password),
             'avatar' => $request->avatar
         ]);
@@ -60,18 +61,32 @@ class AuthController extends Controller
 
     public function getUser(Request $request)
     {
-        $user=User::all();
-        if($user->isEmpty()){
-            return response()->json(['message'=>'No users found'],404);
+        $user = User::all();
+        if ($user->isEmpty()) {
+            return response()->json(['message' => 'No users found'], 404);
         }
         return response()->json($user);
     }
 
-    public function getUserName($name)
+
+    public function getUserSearch($search)
     {
-        $username=User::where('name',$name)->get();
-        return response()->json($username);
+        $user = User::where('id', $search)
+            ->orWhere('name', 'LIKE', "%{$search}%")
+            ->orWhere('surname', 'LIKE', "%{$search}%")
+            ->orWhere('patronymic', 'LIKE', "%{$search}%")
+            ->orWhere('login', 'LIKE', "%{$search}%")
+            ->orWhere('avatar', 'LIKE', "%{$search}%")
+            ->orWhere('created_at', 'LIKE', "%{$search}%")
+            ->get();
+
+        if ($user) {
+            return response()->json($user);
+        }
+
+        return response()->json(['message' => 'Not found'], 404);
     }
+
 
     public function updateUser(Request $request)
     {

@@ -83,47 +83,59 @@ use Illuminate\Support\Facades\Validator;
  *     )
  * ),
  * 
- *
  * @OA\Get(
- *     path="/api/user/{name}",
- *     summary="Поиск пользователей по имени",
- *     description="Возвращает пользователей с указанным именем",
+ *     path="/api/user/{search}",
+ *     summary="Поиск пользователей",
+ *     description="Поиск пользователей по ID, имени, фамилии, отчеству, логину или дате создания",
  *     operationId="getUserName",
  *     tags={"Users"},
- * security={{"bearerAuth":{}}},
+ *     security={{"bearerAuth":{}}},
+ *     
  *     @OA\Parameter(
- *         name="name",
+ *         name="search",
  *         in="path",
  *         required=true,
- *         description="Имя пользователя",
- *         @OA\Schema(type="string", example="Али")
+ *         description="Введите ID, имя, фамилию, отчество, логин или дату создания пользователя",
+ *         @OA\Schema(type="string", example="2025-02-12")
  *     ),
+ *     
  *     @OA\Response(
  *         response=200,
- *         description="Пользователи найдены",
+ *         description="Найденные пользователи",
  *         @OA\JsonContent(
  *             type="array",
  *             @OA\Items(
  *                 type="object",
  *                 @OA\Property(property="id", type="integer", example=1),
- *                  @OA\Property(property="name", type="string", example="Shahboz"),
- *                  @OA\Property(property="surname", type="string", example="Qurbonov"),
- *                  @OA\Property(property="patronymic", type="string", example="G`aybulloevich"),
- *                  @OA\Property(property="avatar", type="string", format="url", example="http://example.com/avatar.jpg")
+ *                 @OA\Property(property="name", type="string", example="Шахбоз"),
+ *                 @OA\Property(property="surname", type="string", example="Курбанов"),
+ *                 @OA\Property(property="patronymic", type="string", example="Гайбуллоевич"),
+ *                 @OA\Property(property="login", type="string", example="shahboz123"),
+ *                 @OA\Property(property="avatar", type="string", format="url", example="http://example.com/avatar.jpg"),
+ *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-02-12 10:23:53")
  *             )
  *         )
  *     ),
+ *     
  *     @OA\Response(
  *         response=404,
- *         description="Пользователи не найдены",
+ *         description="Пользователь не найден",
  *         @OA\JsonContent(
  *             type="object",
- *             @OA\Property(property="message", type="string", example="Users not found")
+ *             @OA\Property(property="message", type="string", example="User not found")
+ *         )
+ *     ),
+ *     
+ *     @OA\Response(
+ *         response=401,
+ *         description="Требуется авторизация",
+ *         @OA\JsonContent(
+ *             type="object",
+ *             @OA\Property(property="message", type="string", example="Unauthorized")
  *         )
  *     )
  * )
- * 
- * 
+ *
  * @OA\PUT(
  *     path="/api/user",
  *     summary="Обновление профиля пользователя",
@@ -188,8 +200,8 @@ use Illuminate\Support\Facades\Validator;
  * ),
  *
  * @OA\GET(
- *     path="/api/chats/{id}/messages",
- *     summary="Получение сообщений чата",
+ *     path="/api/chats/{id}",
+ *     summary="Получение данных о чате",
  *     tags={"Chats"},
  *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
@@ -218,6 +230,37 @@ use Illuminate\Support\Facades\Validator;
  *     )
  * ),
  *
+ * @OA\GET(
+ *     path="/api/chats/{id}/messages",
+ *     summary="Получение информации о чата",
+ *     tags={"Messages"},
+ *     security={{"bearerAuth":{}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer", example=1)
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Сообщения чата",
+ *         @OA\JsonContent(
+ *             type="array",
+ *             @OA\Items(
+ *                 @OA\Property(property="id", type="integer", example=1),
+ *                 @OA\Property(property="user_id", type="integer", example=1),
+ *                 @OA\Property(property="message", type="string", example="Привет!"),
+ *                 @OA\Property(property="file_url", type="string", example="http://example.com/file.jpg"),
+ *                 @OA\Property(property="created_at", type="string", format="date-time", example="2025-02-06T12:00:00Z")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Чат не найден"
+ *     )
+ * ),
+ * 
  * @OA\POST(
  *     path="/api/chats/{id}/messages",
  *     summary="Отправка сообщения в чат",
@@ -250,5 +293,5 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    // Controller logic
+    //
 }
